@@ -5,7 +5,7 @@ import type {
 	SessionSchema,
 	UserSchema
 } from "lucia";
-import { DataSource } from "typeorm";
+import { DataSource, QueryFailedError } from "typeorm";
 import { Key, Session, User } from "../typeorm/schema.js";
 import { error } from "console";
 
@@ -107,11 +107,9 @@ export const typeormAdapter = (
 					const entity = repository.session.create(session);
 					await repository.session.save(entity);
 				} catch (e) {
-					const error = e;
-					// const error = e as Partial<PossiblePrismaError>;
-					// if (error.code === "P2003") {
-					// 	throw new LuciaError("AUTH_INVALID_USER_ID");
-					// }
+					if (e instanceof QueryFailedError) {
+						throw new LuciaError("AUTH_INVALID_USER_ID");
+					}
 
 					throw error;
 				}
@@ -174,8 +172,9 @@ export const typeormAdapter = (
 					}
 					await repository.key.save(key);
 				} catch (e) {
-					if (error instanceof Error)
+					if (e instanceof QueryFailedError)
 						throw new LuciaError("AUTH_INVALID_USER_ID");
+
 					throw e;
 				}
 			},
