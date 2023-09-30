@@ -69,11 +69,6 @@ export const typeormAdapter = (
 				try {
 					await repository.user.delete({ id: userId });
 				} catch (e) {
-					// const error = e as Partial<PossiblePrismaError>;
-					// if (error.code === "P2025") {
-					// 	// user does not exist
-					// 	return;
-					// }
 					throw e;
 				}
 			},
@@ -123,11 +118,6 @@ export const typeormAdapter = (
 						id: sessionId
 					});
 				} catch (e) {
-					// const error = e as Partial<PossiblePrismaError>;
-					// if (error.code === "P2025") {
-					// 	// session does not exist
-					// 	return;
-					// }
 					throw e;
 				}
 			},
@@ -184,11 +174,6 @@ export const typeormAdapter = (
 						id: keyId
 					});
 				} catch (e) {
-					// const error = e as Partial<PossiblePrismaError>;
-					// if (error.code === "P2025") {
-					// 	// key does not exist
-					// 	return;
-					// }
 					throw e;
 				}
 			},
